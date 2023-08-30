@@ -31,7 +31,7 @@ body {
 .subset {
     display: flex;
     max-width: 13vh;
-    border: 1px solid black;
+    border: 2px solid black;
     border-radius: 7px;
     margin: 2px 0px;
     margin-left: auto;

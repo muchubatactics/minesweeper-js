@@ -38,12 +38,19 @@
         </div>
     </div>
     <script>
+
+        //global
+        let width, height, minePercentage;
+
         let cancelButton = document.querySelector(".cancel");
         cancelButton.addEventListener("mouseover", () => {
             cancelButton.style.backgroundColor = "rgb(70, 70, 70)";
         });
         cancelButton.addEventListener("mouseout", () => {
             cancelButton.style.backgroundColor = "rgb(50, 50, 50)";
+        });
+        cancelButton.addEventListener("mousedown", () => {
+            cancelButton.style.backgroundColor = "rgb(10, 10, 10)";
         });
         cancelButton.addEventListener("click", () => {
             window.open("./index.html");
@@ -60,16 +67,96 @@
         })
 
         let subsets = Array.from(document.querySelectorAll(".subset"));
-        subsets.forEach((subset) => {
-            subset.addEventListener("click", () => {
-                console.log("yeye");
+        for(let a = 0; a < subsets.length; a++)
+        {
+            subsets[a].addEventListener("click", () => {
                 for(let i = 0; i < subsets.length; ++i)
                 {
-                    subsets[i].style.border = "1px solid black";
+                    subsets[i].classList.remove("selected");
                 }
-                subset.style.border = "2px solid rgb(0, 146, 0)";
+                subsets[a].classList.add("selected");
             });
+
+            if(a < 2)
+            {
+                subsets[a].children[1].addEventListener("click", () => {
+                    let value = Number(subsets[a].children[0].value);
+                    if (!value) value = 5;
+                    if (value <= 4) value = 5;
+                    if (value > 30) value = 31;
+                    subsets[a].children[0].value = --value;
+                });
+                subsets[a].children[2].addEventListener("click", () => {
+                    let value = Number(subsets[a].children[0].value);
+                    if (!value) value = 100;
+                    if (value <= 4) value = 4;
+                    if (value >= 30) value = 29;
+                    subsets[a].children[0].value = ++value;
+                });
+
+            
+            }
+            else
+            {
+                subsets[a].children[1].addEventListener("click", () => {
+                    width = Number(subsets[0].children[0].value);
+                    height = Number(subsets[1].children[0].value);
+                    
+                    let min, max;
+                    min = Math.ceil(100 / (height * width))
+                    max = Math.floor((((width * height) - 10) * 100) / (width * height));
+                    if(!(width*height)) max = 100;
+                
+                    let value = Number(subsets[a].children[0].value);
+                    if (!value) value = 1;
+                    if (value <= min) value = min + 1;
+                    if (value > max) value = max + 1;
+                    subsets[a].children[0].value = --value;
+                });
+                subsets[a].children[2].addEventListener("click", () => {
+                    width = Number(subsets[0].children[0].value);
+                    height = Number(subsets[1].children[0].value);
+                    
+                    let min, max;
+                    min = Math.ceil(100 / (height * width))
+                    max = Math.floor((((width * height) - 10) * 100) / (width * height));
+                    if (!(width*height)) max = 100;
+
+                    let value = Number(subsets[a].children[0].value);
+                    if (!value) value = 1;
+                    if (value <= min) value = min;
+                    if (value >= max) value = max - 1;
+                    subsets[a].children[0].value = ++value;
+                });
+            }
+        }
+
+
+        let playButton = document.querySelector(".play");
+        playButton.addEventListener("mouseover", () => {
+            playButton.style.backgroundColor = "rgb(0, 170, 0)";
         });
+        playButton.addEventListener("mouseout", () => {
+            playButton.style.backgroundColor = "rgb(0, 146, 0)";
+        });
+        playButton.addEventListener("mousedown", () => {
+            playButton.style.backgroundColor = "rgb(0, 100, 0)";
+        });
+        playButton.addEventListener("click", () => {
+            height = Number(subsets[1].children[0].value);
+            width = Number(subsets[0].children[0].value);
+            minePercentage = Number(subsets[2].children[0].value);
+            
+            if (!height || !width || height > 30 || width > 30 || height < 4 || width < 4)
+            {
+                prompt("invalid values");
+                return;
+            }   
+            if (!minePercentage || minePercentage < 1 || minePercentage > 99) minePercentage = 30;
+            let numberOfMines = Math.floor((minePercentage / 100) * (height * width)); 
+            let url = `./game.html?param1=${height}&param2=${width}&param3=${numberOfMines}`;
+        });
+
     </script>
 </body>
 </html>
