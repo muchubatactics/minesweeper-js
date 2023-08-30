@@ -43,6 +43,42 @@
                 btn.style.backgroundColor = "black";
             });
         });
+
+        let keepTrack = 0;
+        document.addEventListener("keydown", (event) => {
+            if (event.key == "ArrowRight")
+            {
+                buttons[keepTrack].classList.remove("selected");
+
+                keepTrack++;
+                if (keepTrack == 4) keepTrack = 0;
+
+                buttons[keepTrack].classList.add("selected");
+            }
+            else if (event.key == "ArrowLeft")
+            {
+                buttons[keepTrack].classList.remove("selected");
+
+                keepTrack--;
+                if (keepTrack == -1) keepTrack = 3;
+
+                buttons[keepTrack].classList.add("selected");
+            }
+            else if (event.key == "ArrowUp" || event.key == "ArrowDown")
+            {
+                buttons[keepTrack].classList.remove("selected");
+
+                keepTrack += 2;
+                if (keepTrack >= 4) keepTrack -= 4;
+
+                buttons[keepTrack].classList.add("selected");
+            }
+            else if (event.key == "Enter")
+            {
+                buttons[keepTrack].style.backgroundColor = "black";
+            }
+            
+        });
     </script>
     
 </body>
