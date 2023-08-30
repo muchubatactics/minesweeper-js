@@ -27,6 +27,15 @@ button {
     
 }
 
+.bigger {
+    font-size: 30px;
+    margin-bottom: 1px;
+}
+
+.smaller {
+    margin-top: 1px;
+}
+
 .prevent-select {
     -webkit-user-select: none; /* Safari */
     -ms-user-select: none; /* IE 10 and IE 11 */
