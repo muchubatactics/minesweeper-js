@@ -11,7 +11,7 @@
         <div class="sub">
             <div class="label">Width</div>
             <div class="subset">
-                <input type="text">
+                <input type="text" placeholder="4-30">
                 <button>-</button>
                 <button>+</button>
             </div>
@@ -19,7 +19,7 @@
         <div class="sub">
             <div class="label">Height</div>
             <div class="subset">
-                <input type="text">
+                <input type="text" placeholder="4-30">
                 <button>-</button>
                 <button>+</button>
             </div>
@@ -41,6 +41,16 @@
 
         //global
         let width, height, minePercentage;
+
+        function updatePercentage(oldHeight, oldwidth, oldPercentage)
+        {
+            if (!oldPercentage) oldPercentage = 15;
+            height = Number(subsets[1].children[0].value);
+            width = Number(subsets[0].children[0].value);
+            let oldMines = Math.floor((oldPercentage / 100) * (oldHeight * oldwidth)); 
+            let x = Math.round((100 * oldMines) / (height * width));
+            return x > 99 ? 15 : x;
+        }
 
         let cancelButton = document.querySelector(".cancel");
         cancelButton.addEventListener("mouseover", () => {
@@ -80,18 +90,36 @@
             if(a < 2)
             {
                 subsets[a].children[1].addEventListener("click", () => {
+                    let oldHeight = Number(subsets[1].children[0].value);
+                    let oldWidth = Number(subsets[0].children[0].value);
+                    let oldPercentage = Number(subsets[2].children[0].value);
+
                     let value = Number(subsets[a].children[0].value);
                     if (!value) value = 5;
                     if (value <= 4) value = 5;
                     if (value > 30) value = 31;
                     subsets[a].children[0].value = --value;
+
+                    if (oldHeight && oldWidth)
+                    {
+                        subsets[2].children[0].value = updatePercentage(oldHeight, oldWidth, oldPercentage);
+                    }
                 });
                 subsets[a].children[2].addEventListener("click", () => {
+                    let oldHeight = Number(subsets[1].children[0].value);
+                    let oldWidth = Number(subsets[0].children[0].value);
+                    let oldPercentage = Number(subsets[2].children[0].value);
+
                     let value = Number(subsets[a].children[0].value);
                     if (!value) value = 100;
                     if (value <= 4) value = 4;
                     if (value >= 30) value = 29;
                     subsets[a].children[0].value = ++value;
+
+                    if (oldHeight && oldWidth)
+                    {
+                        subsets[2].children[0].value = updatePercentage(oldHeight, oldWidth, oldPercentage);
+                    }
                 });
 
             
