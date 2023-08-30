@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="./indexStyle.css" rel="stylesheet">
-    <title>Document</title>
+    <title>minesweeper</title>
 </head>
 <body>
     <div class="container" class="prevent-select">
@@ -34,13 +34,21 @@
         let buttons = Array.from(document.querySelectorAll("button"));
         buttons.forEach((btn) => {
             btn.addEventListener("mouseover", () => {
-                btn.style.backgroundColor = "rgb(90, 90, 90)";
+                btn.style.backgroundColor = "rgb(70, 70, 70)";
             });
             btn.addEventListener("mouseout", () => {
-                btn.style.backgroundColor = "rgb(70, 70, 70)";
+                btn.style.backgroundColor = "rgb(50, 50, 50)";
             });
             btn.addEventListener("mousedown", () => {
                 btn.style.backgroundColor = "black";
+                let arg1, arg2;
+                let matchArray = btn.textContent.match(/(\d+) x (\d+)/);
+                if (!matchArray) window.open("./customPage.html")
+                else
+                {
+                    arg1 = matchArray[1];
+                    arg2 = matchArray[2];                    
+                }
             });
         });
 

@@ -11,7 +11,7 @@ body {
     align-items: center;
     margin: 0;
     padding: 0;
-    background-color: rgb(59, 59, 59);
+    background-color: rgb(40, 40, 40);
 }
 
 button {
@@ -20,7 +20,7 @@ button {
     margin: 10px;
     width: 45vh;
     height: 45vh;
-    background-color: rgb(70, 70, 70);
+    background-color: rgb(50, 50, 50);
     color: white;
     border-radius: 5px;
     border: 1px solid black;
@@ -34,5 +34,5 @@ button {
 }
 
 .selected {
-    border: 2px solid lime;
+    border: 2px solid rgb(0, 146, 0);
 }

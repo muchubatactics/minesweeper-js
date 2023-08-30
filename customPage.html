@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>custom</title>
+    <link rel="stylesheet" href="./customPageStyle.css">
+</head>
+<body>
+    <div class="container">
+        <div class="sub">
+            <div class="label">Width</div>
+            <div class="subset">
+                <input type="text">
+                <button>-</button>
+                <button>+</button>
+            </div>
+        </div>
+        <div class="sub">
+            <div class="label">Height</div>
+            <div class="subset">
+                <input type="text">
+                <button>-</button>
+                <button>+</button>
+            </div>
+        </div>
+        <div class="sub">
+            <div class="label">Percent mines</div>
+            <div class="subset">
+                <input type="text">
+                <button>-</button>
+                <button>+</button>
+            </div>
+        </div>
+        <div class="buttons">
+            <button class="play">Play Game</button>
+            <button class="cancel">Cancel</button>
+        </div>
+    </div>
+    <script>
+        let cancelButton = document.querySelector(".cancel");
+        cancelButton.addEventListener("mouseover", () => {
+            cancelButton.style.backgroundColor = "rgb(70, 70, 70)";
+        });
+        cancelButton.addEventListener("mouseout", () => {
+            cancelButton.style.backgroundColor = "rgb(50, 50, 50)";
+        });
+        cancelButton.addEventListener("click", () => {
+            window.open("./index.html");
+        });
+
+        let addSubtractButtons = Array.from(document.querySelectorAll(".subset > button"));
+        addSubtractButtons.forEach((btn) => {
+            btn.addEventListener("mouseover", () => {
+                btn.style.backgroundColor = "rgb(40,40,40)";
+            });
+            btn.addEventListener("mouseout", () => {
+                btn.style.backgroundColor = "rgb(30,30,30)";
+            });
+        })
+
+        let subsets = Array.from(document.querySelectorAll(".subset"));
+        subsets.forEach((subset) => {
+            subset.addEventListener("click", () => {
+                console.log("yeye");
+                for(let i = 0; i < subsets.length; ++i)
+                {
+                    subsets[i].style.border = "1px solid black";
+                }
+                subset.style.border = "2px solid rgb(0, 146, 0)";
+            });
+        });
+    </script>
+</body>
+</html>
