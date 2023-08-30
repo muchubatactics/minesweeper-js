@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="./indexStyle.css" rel="stylesheet">
+    <title>Document</title>
+</head>
+<body>
+    <div class="container" class="prevent-select">
+        <div class="prevent-select">
+            <button draggable="false" class="prevent-select">
+                <strong>8 x 8</strong>
+                <br><strong>10</strong> mines
+            </button>
+            <button draggable="false" class="prevent-select">
+                <strong>16 x 16</strong>
+                <br><strong>40</strong> mines
+            </button>
+        </div>
+        <div class="prevent-select">
+            <button draggable="false" class="prevent-select">
+                <strong>30 x 16</strong>
+                <br><strong>99</strong> mines
+            </button>
+            <button draggable="false" class="prevent-select">
+                <strong>?</strong>
+                <br>custom
+            </button>
+        </div>
+    </div>
+
+    <script>
+        let buttons = Array.from(document.querySelectorAll("button"));
+        buttons.forEach((btn) => {
+            btn.addEventListener("mouseover", () => {
+                btn.style.backgroundColor = "rgb(90, 90, 90)";
+            });
+            btn.addEventListener("mouseout", () => {
+                btn.style.backgroundColor = "rgb(70, 70, 70)";
+            });
+            btn.addEventListener("mousedown", () => {
+                btn.style.backgroundColor = "black";
+            });
+        });
+    </script>
+    
+</body>
+</html>

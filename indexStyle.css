@@ -1,0 +1,35 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter&display=swap');
+
+body {
+    margin: 0;
+}
+.container {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+    padding: 0;
+    background-color: rgb(59, 59, 59);
+}
+
+button {
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    margin: 10px;
+    width: 45vh;
+    height: 45vh;
+    background-color: rgb(70, 70, 70);
+    color: white;
+    border-radius: 5px;
+    border: 1px solid black;
+    
+}
+
+.prevent-select {
+    -webkit-user-select: none; /* Safari */
+    -ms-user-select: none; /* IE 10 and IE 11 */
+    user-select: none; /* Standard syntax */
+}
+  
