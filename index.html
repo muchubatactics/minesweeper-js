@@ -41,13 +41,22 @@
             });
             btn.addEventListener("mousedown", () => {
                 btn.style.backgroundColor = "black";
-                let arg1, arg2;
                 let matchArray = btn.textContent.match(/(\d+) x (\d+)/);
-                if (!matchArray) window.open("./customPage.html")
+                if (!matchArray) window.open("./customPage.html", "_self")
                 else
                 {
+                    let arg1, arg2, numberOfMines;                  
                     arg1 = matchArray[1];
-                    arg2 = matchArray[2];                    
+                    arg2 = matchArray[2];
+                    if (arg1 == 8) numberOfMines = 10;
+                    if (arg1 == 16) numberOfMines = 40;
+                    if (arg1 == 30) numberOfMines = 99;
+                    if (numberOfMines)
+                    {
+                        let url = `./game.html?param1=${arg2}&param2=${arg1}&param3=${numberOfMines}`;
+                        console.log(url);
+                        window.open(url, "_self");
+                    }
                 }
             });
         });
@@ -84,6 +93,24 @@
             else if (event.key == "Enter")
             {
                 buttons[keepTrack].style.backgroundColor = "black";
+                let matchArray = buttons[keepTrack].textContent.match(/(\d+) x (\d+)/);
+                if (!matchArray) window.open("./customPage.html", "_self")
+                else
+                {
+                    let arg1, arg2, numberOfMines;                  
+                    arg1 = matchArray[1];
+                    arg2 = matchArray[2];
+                    if (arg1 == 8) numberOfMines = 10;
+                    if (arg1 == 16) numberOfMines = 40;
+                    if (arg1 == 30) numberOfMines = 99;
+                    if (numberOfMines)
+                    {
+                        let url = `./game.html?param1=${arg2}&param2=${arg1}&param3=${numberOfMines}`;
+                        console.log(url);
+                        window.open(url, "_self");
+                    }
+                }
+                
             }
             
         });
