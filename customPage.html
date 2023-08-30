@@ -149,12 +149,14 @@
             
             if (!height || !width || height > 30 || width > 30 || height < 4 || width < 4)
             {
-                prompt("invalid values");
+                alert("invalid values");
                 return;
             }   
             if (!minePercentage || minePercentage < 1 || minePercentage > 99) minePercentage = 30;
             let numberOfMines = Math.floor((minePercentage / 100) * (height * width)); 
             let url = `./game.html?param1=${height}&param2=${width}&param3=${numberOfMines}`;
+            console.log(url);
+            window.open(url);
         });
 
     </script>
