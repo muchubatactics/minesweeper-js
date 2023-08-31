@@ -1,0 +1,49 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter&display=swap');
+
+body {
+    background-color: rgb(40, 40, 40);
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+}
+
+
+.grid {
+    background-color: gray; /*temp*/
+    width: 70vw;
+    height: 90vh;
+}
+
+.controls {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: white;
+    height: 90vh;
+    font-family: "Inter", sans-serif;
+    width: 8vw;
+    margin-left: 20px;
+}
+
+.top {
+    margin-bottom: auto;
+}
+
+.buttons {
+    margin-top: auto;
+    display: flex;
+    flex-direction: column;
+}
+
+.buttons button {
+    font-family: "Inter", sans-serif;
+    width: 8vw;
+    height: 50px;
+    margin-top: 5px;
+    border-radius: 5px;
+    border: 1px solid black;
+    background-color: rgb(50, 50, 50);
+    color: white;
+}
