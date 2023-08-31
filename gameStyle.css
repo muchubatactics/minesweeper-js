@@ -11,9 +11,23 @@ body {
 
 
 .grid {
-    background-color: gray; /*temp*/
+    /* background-color: gray; */
     /* width: 70vw;
     height: 90vh; */
+    display: flex;
+    flex-direction: column;
+}
+
+.grid > div {
+    display: flex;
+    flex-direction: row;
+}
+
+.single-box {
+    border-radius: 3px;
+    border: 0px;
+    margin: 1px;
+    background-color: gray;
 }
 
 .controls {
