@@ -80,3 +80,7 @@ body {
     text-align: center;
     background-color: white;
 }
+
+.marked {
+    background-color: red;
+}

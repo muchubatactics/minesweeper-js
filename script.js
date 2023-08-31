@@ -32,6 +32,8 @@ function initialize(grid, clickedOn)
     let minePos = generateRandomMines(height * width, mines, clickedOn);
     for (let i = 0; i < grid.length; ++i)
     {
+        grid[i].box.marked = false;
+        grid[i].classList.remove("marked");
         if (minePos.indexOf(grid[i].box.ID) != -1)
         {
             grid[i].box.isMine = true;
@@ -139,7 +141,7 @@ function generateSafety(clickedOn)
 function whenLeftClicked()
 {
     if (!isInitialized) initialize(arrayOfBoxes, this.box.ID);
-    if (this.box.solved) return;
+    if (this.box.solved) return solveForSolved(this.box.ID);
     if (this.box.isMine) return clickedMine();
     
     if (this.box.numberOfSurroundMines)
@@ -152,6 +154,115 @@ function whenLeftClicked()
     }
     this.box.solved = true;
     this.classList.add("solved");
+}
+
+
+function numberOfMarkedAround(id)
+{
+    let x = 0;
+    if ((id + 1) % width != 0)
+    {
+        if (arrayOfBoxes[id + 1] && arrayOfBoxes[id + 1].box.marked) x++;
+        if (arrayOfBoxes[id - width + 1] && arrayOfBoxes[id - width + 1].box.marked) x++;
+        if (arrayOfBoxes[id + width + 1] && arrayOfBoxes[id + width + 1].box.marked) x++;
+
+    }
+
+    if (id % width != 0) 
+    {
+        if (arrayOfBoxes[id - 1] && arrayOfBoxes[id - 1].box.marked) x++;
+        if (arrayOfBoxes[id - width - 1] && arrayOfBoxes[id - width - 1].box.marked) x++;
+        if (arrayOfBoxes[id + width - 1] && arrayOfBoxes[id + width - 1].box.marked) x++;
+        
+    }
+    
+    if (arrayOfBoxes[id - width] && arrayOfBoxes[id - width].box.marked) x++;   
+    if (arrayOfBoxes[id + width] && arrayOfBoxes[id + width].box.marked) x++;
+
+    return x;
+}
+
+function solveForSolved(id)
+{
+    if(arrayOfBoxes[id].box.solvedSurround) return;
+    
+    if (arrayOfBoxes[id].box.numberOfSurroundMines == 0) return;
+    let basis = numberOfMarkedAround(id);
+    if (basis != arrayOfBoxes[id].box.numberOfSurroundMines) return;
+    
+    arrayOfBoxes[id].box.solvedSurround = true;
+
+    if ((id + 1) % width != 0)
+    {
+        if (arrayOfBoxes[id + 1] && !arrayOfBoxes[id + 1].box.isMine)
+        {
+            arrayOfBoxes[id + 1].box.solved = true;
+            arrayOfBoxes[id + 1].classList.add("solved");
+            if (arrayOfBoxes[id + 1].box.numberOfSurroundMines == 0) solveSurrounding(id + 1);
+            else arrayOfBoxes[id + 1].textContent = String(arrayOfBoxes[id + 1].box.numberOfSurroundMines);
+        }
+        if (arrayOfBoxes[id - width + 1] && !arrayOfBoxes[id - width + 1].box.isMine)
+        {
+            arrayOfBoxes[id - width + 1].box.solved = true;
+            arrayOfBoxes[id - width + 1].classList.add("solved");
+            if (arrayOfBoxes[id - width + 1].box.numberOfSurroundMines == 0) solveSurrounding(id - width + 1);
+            else arrayOfBoxes[id - width + 1].textContent = String(arrayOfBoxes[id - width + 1].box.numberOfSurroundMines);
+        }
+        if (arrayOfBoxes[id + width + 1] && !arrayOfBoxes[id + width + 1].box.isMine)
+        {
+            arrayOfBoxes[id + width + 1].box.solved = true;
+            arrayOfBoxes[id + width + 1].classList.add("solved");
+            if (arrayOfBoxes[id + width + 1].box.numberOfSurroundMines == 0) solveSurrounding(id + width + 1);
+            else arrayOfBoxes[id + width + 1].textContent = String(arrayOfBoxes[id + width + 1].box.numberOfSurroundMines);
+        }
+
+    }
+
+    if (id % width != 0) 
+    {
+        if (arrayOfBoxes[id - 1] && !arrayOfBoxes[id - 1].box.isMine )
+        {
+            arrayOfBoxes[id - 1].box.solved = true;
+            arrayOfBoxes[id - 1].classList.add("solved");
+            if (arrayOfBoxes[id - 1].box.numberOfSurroundMines == 0) solveSurrounding(id - 1);
+            else arrayOfBoxes[id - 1].textContent = String(arrayOfBoxes[id - 1].box.numberOfSurroundMines);
+        }
+        if (arrayOfBoxes[id - width - 1] && !arrayOfBoxes[id - width - 1].box.isMine)
+        {
+            arrayOfBoxes[id - width - 1].box.solved = true;
+            arrayOfBoxes[id - width - 1].classList.add("solved");
+            if (arrayOfBoxes[id - width - 1].box.numberOfSurroundMines == 0) solveSurrounding(id - width - 1);
+            else arrayOfBoxes[id - width - 1].textContent = String(arrayOfBoxes[id - width - 1].box.numberOfSurroundMines);
+        }
+        if (arrayOfBoxes[id + width - 1] && !arrayOfBoxes[id + width - 1].box.isMine)
+        {
+            arrayOfBoxes[id + width - 1].box.solved = true;
+            arrayOfBoxes[id + width - 1].classList.add("solved");
+            if (arrayOfBoxes[id + width - 1].box.numberOfSurroundMines == 0) solveSurrounding(id + width - 1);
+            else arrayOfBoxes[id + width - 1].textContent = String(arrayOfBoxes[id + width - 1].box.numberOfSurroundMines);
+        }
+        
+    }
+    
+    if (arrayOfBoxes[id - width] && !arrayOfBoxes[id - width].box.isMine)
+    {
+        arrayOfBoxes[id - width].box.solved = true;
+        arrayOfBoxes[id - width].classList.add("solved");
+        if (arrayOfBoxes[id - width].box.numberOfSurroundMines == 0) solveSurrounding(id - width);
+        else arrayOfBoxes[id - width].textContent = String(arrayOfBoxes[id - width].box.numberOfSurroundMines);
+    }
+        
+    if (arrayOfBoxes[id + width] && !arrayOfBoxes[id + width].box.isMine)
+    {
+        arrayOfBoxes[id + width].box.solved = true;
+        arrayOfBoxes[id + width].classList.add("solved");
+        if (arrayOfBoxes[id + width].box.numberOfSurroundMines == 0) solveSurrounding(id + width);
+        else arrayOfBoxes[id + width].textContent = String(arrayOfBoxes[id + width].box.numberOfSurroundMines);
+    }
+
+    
+
+
 }
 
 function solveSurrounding(id)
@@ -167,21 +278,21 @@ function solveSurrounding(id)
             arrayOfBoxes[id + 1].box.solved = true;
             arrayOfBoxes[id + 1].classList.add("solved");
             if (arrayOfBoxes[id + 1].box.numberOfSurroundMines == 0) solveSurrounding(id + 1);
-         else arrayOfBoxes[id + 1].textContent = String(arrayOfBoxes[id + 1].box.numberOfSurroundMines);
+            else arrayOfBoxes[id + 1].textContent = String(arrayOfBoxes[id + 1].box.numberOfSurroundMines);
         }
         if (arrayOfBoxes[id - width + 1])
         {
             arrayOfBoxes[id - width + 1].box.solved = true;
             arrayOfBoxes[id - width + 1].classList.add("solved");
             if (arrayOfBoxes[id - width + 1].box.numberOfSurroundMines == 0) solveSurrounding(id - width + 1);
-         else arrayOfBoxes[id - width + 1].textContent = String(arrayOfBoxes[id - width + 1].box.numberOfSurroundMines);
+            else arrayOfBoxes[id - width + 1].textContent = String(arrayOfBoxes[id - width + 1].box.numberOfSurroundMines);
         }
         if (arrayOfBoxes[id + width + 1])
         {
             arrayOfBoxes[id + width + 1].box.solved = true;
             arrayOfBoxes[id + width + 1].classList.add("solved");
             if (arrayOfBoxes[id + width + 1].box.numberOfSurroundMines == 0) solveSurrounding(id + width + 1);
-         else arrayOfBoxes[id + width + 1].textContent = String(arrayOfBoxes[id + width + 1].box.numberOfSurroundMines);
+            else arrayOfBoxes[id + width + 1].textContent = String(arrayOfBoxes[id + width + 1].box.numberOfSurroundMines);
         }
 
     }
@@ -193,21 +304,21 @@ function solveSurrounding(id)
             arrayOfBoxes[id - 1].box.solved = true;
             arrayOfBoxes[id - 1].classList.add("solved");
             if (arrayOfBoxes[id - 1].box.numberOfSurroundMines == 0) solveSurrounding(id - 1);
-         else arrayOfBoxes[id - 1].textContent = String(arrayOfBoxes[id - 1].box.numberOfSurroundMines);
+            else arrayOfBoxes[id - 1].textContent = String(arrayOfBoxes[id - 1].box.numberOfSurroundMines);
         }
         if (arrayOfBoxes[id - width - 1])
         {
             arrayOfBoxes[id - width - 1].box.solved = true;
             arrayOfBoxes[id - width - 1].classList.add("solved");
             if (arrayOfBoxes[id - width - 1].box.numberOfSurroundMines == 0) solveSurrounding(id - width - 1);
-         else arrayOfBoxes[id - width - 1].textContent = String(arrayOfBoxes[id - width - 1].box.numberOfSurroundMines);
+            else arrayOfBoxes[id - width - 1].textContent = String(arrayOfBoxes[id - width - 1].box.numberOfSurroundMines);
         }
         if (arrayOfBoxes[id + width - 1])
         {
             arrayOfBoxes[id + width - 1].box.solved = true;
             arrayOfBoxes[id + width - 1].classList.add("solved");
             if (arrayOfBoxes[id + width - 1].box.numberOfSurroundMines == 0) solveSurrounding(id + width - 1);
-         else arrayOfBoxes[id + width - 1].textContent = String(arrayOfBoxes[id + width - 1].box.numberOfSurroundMines);
+            else arrayOfBoxes[id + width - 1].textContent = String(arrayOfBoxes[id + width - 1].box.numberOfSurroundMines);
         }
         
     }
@@ -248,6 +359,20 @@ for (let x = 0; x < height; ++x)
         singleBox.box = new Box;
         
         singleBox.addEventListener("click", whenLeftClicked);
+        singleBox.addEventListener("contextmenu", (event) => {
+            event.preventDefault();
+            if (singleBox.box.solved) return;
+            if (singleBox.box.marked)
+            {
+                singleBox.box.marked = false;
+                singleBox.classList.remove("marked");
+            }
+            else
+            {
+                singleBox.classList.add("marked");
+                singleBox.box.marked = true;
+            }
+        });
 
         boxRow.appendChild(singleBox);
         arrayOfBoxes.push(singleBox);
@@ -262,6 +387,8 @@ NOTES
 either you calculate the number in the boxes when you are initializing or you calculate it per click. (i think ill go with the in initialise option) ******done********
 
 write functionality for 0 boxes to solve their surroundings *****done******
+
+test solveForSolved
 
 add coloring to the solved boxes
 
