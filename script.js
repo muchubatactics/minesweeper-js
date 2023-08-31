@@ -20,6 +20,8 @@ class Box
         this.isMine = false;
         this.numberOfSurroundMines = 0;
         this.marked = false;
+        this.solved = false;
+        this.solvedSurround = false;
         this.ID = Box.count++;
     }
 }
@@ -37,12 +39,62 @@ function initialize(grid, clickedOn)
     }
 
     numberEachBox(grid);
+    isInitialized = true;
 }
 
 function numberEachBox(grid)
 {
-    //go around each box, check the 8 surroundings, use an outofbounds check, it should probably return undefined
-    
+    for (let i = 0; i < grid.length; i++)
+    {
+        if (grid[i].box.isMine) continue;
+
+        let count = 0;
+        if ((grid[i].box.ID + 1) % width != 0)
+        {
+            if (grid[i + 1])
+            {
+                if(grid[i + 1].box.isMine) count++;
+            }
+            if (grid[i - width + 1])
+            {
+                if(grid[i - width + 1].box.isMine) count++;
+            }
+            if (grid[i + width + 1])
+            {
+                if(grid[i + width + 1].box.isMine) count++;
+            }
+
+        }
+
+        if (grid[i].box.ID % width != 0) 
+        {
+            if (grid[i - 1])
+            {
+                if(grid[i - 1].box.isMine) count++;
+            }
+            if (grid[i - width - 1])
+            {
+                if(grid[i - width - 1].box.isMine) count++;
+            }
+            if (grid[i + width - 1])
+            {
+                if(grid[i + width - 1].box.isMine) count++;
+            }
+            
+        }
+        
+        if (grid[i - width])
+        {
+            if(grid[i - width].box.isMine) count++;
+        }
+            
+        if (grid[i + width])
+        {
+            if(grid[i + width].box.isMine) count++;
+        }   
+
+        grid[i].box.numberOfSurroundMines = count;
+    }
 }
 
 function generateRandomMines(total, numberOfMines, clickedOn)
@@ -84,7 +136,105 @@ function generateSafety(clickedOn)
     return array;
 }
 
+function whenLeftClicked()
+{
+    if (!isInitialized) initialize(arrayOfBoxes, this.box.ID);
+    if (this.box.solved) return;
+    if (this.box.isMine) return clickedMine();
+    
+    if (this.box.numberOfSurroundMines)
+    {
+        this.textContent = String(this.box.numberOfSurroundMines);
+    }
+    else
+    {
+        solveSurrounding(this.box.ID);
+    }
+    this.box.solved = true;
+    this.classList.add("solved");
+}
 
+function solveSurrounding(id)
+{
+    console.log("lets go", id);
+    if(arrayOfBoxes[id].box.solvedSurround) return;
+    arrayOfBoxes[id].box.solvedSurround = true;
+
+    if ((id + 1) % width != 0)
+    {
+        if (arrayOfBoxes[id + 1])
+        {
+            arrayOfBoxes[id + 1].box.solved = true;
+            arrayOfBoxes[id + 1].classList.add("solved");
+            if (arrayOfBoxes[id + 1].box.numberOfSurroundMines == 0) solveSurrounding(id + 1);
+         else arrayOfBoxes[id + 1].textContent = String(arrayOfBoxes[id + 1].box.numberOfSurroundMines);
+        }
+        if (arrayOfBoxes[id - width + 1])
+        {
+            arrayOfBoxes[id - width + 1].box.solved = true;
+            arrayOfBoxes[id - width + 1].classList.add("solved");
+            if (arrayOfBoxes[id - width + 1].box.numberOfSurroundMines == 0) solveSurrounding(id - width + 1);
+         else arrayOfBoxes[id - width + 1].textContent = String(arrayOfBoxes[id - width + 1].box.numberOfSurroundMines);
+        }
+        if (arrayOfBoxes[id + width + 1])
+        {
+            arrayOfBoxes[id + width + 1].box.solved = true;
+            arrayOfBoxes[id + width + 1].classList.add("solved");
+            if (arrayOfBoxes[id + width + 1].box.numberOfSurroundMines == 0) solveSurrounding(id + width + 1);
+         else arrayOfBoxes[id + width + 1].textContent = String(arrayOfBoxes[id + width + 1].box.numberOfSurroundMines);
+        }
+
+    }
+
+    if (id % width != 0) 
+    {
+        if (arrayOfBoxes[id - 1])
+        {
+            arrayOfBoxes[id - 1].box.solved = true;
+            arrayOfBoxes[id - 1].classList.add("solved");
+            if (arrayOfBoxes[id - 1].box.numberOfSurroundMines == 0) solveSurrounding(id - 1);
+         else arrayOfBoxes[id - 1].textContent = String(arrayOfBoxes[id - 1].box.numberOfSurroundMines);
+        }
+        if (arrayOfBoxes[id - width - 1])
+        {
+            arrayOfBoxes[id - width - 1].box.solved = true;
+            arrayOfBoxes[id - width - 1].classList.add("solved");
+            if (arrayOfBoxes[id - width - 1].box.numberOfSurroundMines == 0) solveSurrounding(id - width - 1);
+         else arrayOfBoxes[id - width - 1].textContent = String(arrayOfBoxes[id - width - 1].box.numberOfSurroundMines);
+        }
+        if (arrayOfBoxes[id + width - 1])
+        {
+            arrayOfBoxes[id + width - 1].box.solved = true;
+            arrayOfBoxes[id + width - 1].classList.add("solved");
+            if (arrayOfBoxes[id + width - 1].box.numberOfSurroundMines == 0) solveSurrounding(id + width - 1);
+         else arrayOfBoxes[id + width - 1].textContent = String(arrayOfBoxes[id + width - 1].box.numberOfSurroundMines);
+        }
+        
+    }
+    
+    if (arrayOfBoxes[id - width])
+    {
+        arrayOfBoxes[id - width].box.solved = true;
+        arrayOfBoxes[id - width].classList.add("solved");
+        if (arrayOfBoxes[id - width].box.numberOfSurroundMines == 0) solveSurrounding(id - width);
+        else arrayOfBoxes[id - width].textContent = String(arrayOfBoxes[id - width].box.numberOfSurroundMines);
+    }
+        
+    if (arrayOfBoxes[id + width])
+    {
+        arrayOfBoxes[id + width].box.solved = true;
+        arrayOfBoxes[id + width].classList.add("solved");
+        if (arrayOfBoxes[id + width].box.numberOfSurroundMines == 0) solveSurrounding(id + width);
+        else arrayOfBoxes[id + width].textContent = String(arrayOfBoxes[id + width].box.numberOfSurroundMines);
+    }
+}
+
+function clickedMine()
+{
+
+}
+
+//script
 let grid = document.querySelector(".grid");
 for (let x = 0; x < height; ++x)
 {
@@ -96,17 +246,23 @@ for (let x = 0; x < height; ++x)
         singleBox.style.width = "100px";
         singleBox.style.height = "100px";
         singleBox.box = new Box;
+        
+        singleBox.addEventListener("click", whenLeftClicked);
+
         boxRow.appendChild(singleBox);
-        console.log(singleBox.box.ID);
         arrayOfBoxes.push(singleBox);
     }
     grid.appendChild(boxRow);
 }
 
 
-
 /*
 NOTES
 
-either you calculate the number in the boxes when you are initializing or you calculate it per click. (i think ill go with the in initialise option)
+either you calculate the number in the boxes when you are initializing or you calculate it per click. (i think ill go with the in initialise option) ******done********
+
+write functionality for 0 boxes to solve their surroundings *****done******
+
+add coloring to the solved boxes
+
 */
