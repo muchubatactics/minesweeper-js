@@ -142,7 +142,7 @@ function whenLeftClicked()
 {
     if (!isInitialized) initialize(arrayOfBoxes, this.box.ID);
     if (this.box.solved) return solveForSolved(this.box.ID);
-    if (this.box.isMine) return clickedMine();
+    if (this.box.isMine) return clickedMine(this.box.ID);
     
     if (this.box.numberOfSurroundMines)
     {
@@ -153,6 +153,22 @@ function whenLeftClicked()
         solveSurrounding(this.box.ID);
     }
     solveWithColor(this.box.ID);
+}
+
+function whenRightClicked(event)
+{
+    event.preventDefault();
+    if (this.box.solved) return;
+    if (this.box.marked)
+    {
+        this.box.marked = false;
+        this.classList.remove("marked");
+    }
+    else
+    {
+        this.classList.add("marked");
+        this.box.marked = true;
+    }
 }
 
 
@@ -323,9 +339,18 @@ function solveSurrounding(id)
     }
 }
 
-function clickedMine()
+function clickedMine(id)
 {
-
+    arrayOfBoxes[id].style.backgroundColor = "red";
+    for (let i = 0; i < arrayOfBoxes.length; i++)
+    {
+        arrayOfBoxes[i].removeEventListener("click", whenLeftClicked);
+        arrayOfBoxes[i].removeEventListener("contextmenu", whenRightClicked);
+        if (i != id && arrayOfBoxes[i].box.isMine)
+        {
+            arrayOfBoxes[i].style.backgroundColor = "black";
+        }
+    }
 }
 
 function solveWithColor(id)
@@ -380,20 +405,7 @@ for (let x = 0; x < height; ++x)
         singleBox.box = new Box;
         
         singleBox.addEventListener("click", whenLeftClicked);
-        singleBox.addEventListener("contextmenu", (event) => {
-            event.preventDefault();
-            if (singleBox.box.solved) return;
-            if (singleBox.box.marked)
-            {
-                singleBox.box.marked = false;
-                singleBox.classList.remove("marked");
-            }
-            else
-            {
-                singleBox.classList.add("marked");
-                singleBox.box.marked = true;
-            }
-        });
+        singleBox.addEventListener("contextmenu", whenRightClicked);
 
         boxRow.appendChild(singleBox);
         arrayOfBoxes.push(singleBox);
@@ -411,6 +423,6 @@ write functionality for 0 boxes to solve their surroundings *****done******
 
 test solveForSolved ***done***
 
-add coloring to the solved boxes
+add coloring to the solved boxes ****done****
 
 */
