@@ -11,6 +11,8 @@ console.log(height, width, mines);
 //global
 let isInitialized = false;
 let arrayOfBoxes = [];
+let timer, startTime;
+let markedMineCount = 0;
 
 class Box 
 {
@@ -27,8 +29,24 @@ class Box
 }
 
 //functions
+function initializeTimer()
+{
+    startTime = Date.now();
+    document.addEventListener("visibilitychange", () => {
+        if(!document.hidden)
+        {
+
+        }
+    });
+}
+
 function initialize(grid, clickedOn)
 {
+    // initializeTimer();
+
+    markedMineCount = 0;
+    minesSoFar.textContent = `${markedMineCount}/${mines}`;
+
     let minePos = generateRandomMines(height * width, mines, clickedOn);
     for (let i = 0; i < grid.length; ++i)
     {
@@ -163,11 +181,15 @@ function whenRightClicked(event)
     {
         this.box.marked = false;
         this.classList.remove("marked");
+        markedMineCount--;
+        minesSoFar.textContent = `${markedMineCount}/${mines}`;
     }
     else
     {
         this.classList.add("marked");
         this.box.marked = true;
+        markedMineCount++;
+        minesSoFar.textContent = `${markedMineCount}/${mines}`;
     }
 }
 
@@ -209,20 +231,23 @@ function solveForSolved(id)
 
     if ((id + 1) % width != 0)
     {
-        if (arrayOfBoxes[id + 1] && !arrayOfBoxes[id + 1].box.isMine)
+        if (arrayOfBoxes[id + 1] && !arrayOfBoxes[id + 1].box.marked)
         {
+            if (arrayOfBoxes[id + 1].box.isMine) return clickedMine(id + 1);
             solveWithColor(id + 1);
             if (arrayOfBoxes[id + 1].box.numberOfSurroundMines == 0) solveSurrounding(id + 1);
             else arrayOfBoxes[id + 1].textContent = String(arrayOfBoxes[id + 1].box.numberOfSurroundMines);
         }
-        if (arrayOfBoxes[id - width + 1] && !arrayOfBoxes[id - width + 1].box.isMine)
+        if (arrayOfBoxes[id - width + 1] && !arrayOfBoxes[id - width + 1].box.marked)
         {
+            if (arrayOfBoxes[id - width + 1].box.isMine) return clickedMine(id - width + 1);
             solveWithColor(id - width + 1);
             if (arrayOfBoxes[id - width + 1].box.numberOfSurroundMines == 0) solveSurrounding(id - width + 1);
             else arrayOfBoxes[id - width + 1].textContent = String(arrayOfBoxes[id - width + 1].box.numberOfSurroundMines);
         }
-        if (arrayOfBoxes[id + width + 1] && !arrayOfBoxes[id + width + 1].box.isMine)
+        if (arrayOfBoxes[id + width + 1] && !arrayOfBoxes[id + width + 1].box.marked)
         {
+            if (arrayOfBoxes[id + width + 1].box.isMine) return clickedMine(id + width + 1);
             solveWithColor(id + width + 1);
             if (arrayOfBoxes[id + width + 1].box.numberOfSurroundMines == 0) solveSurrounding(id + width + 1);
             else arrayOfBoxes[id + width + 1].textContent = String(arrayOfBoxes[id + width + 1].box.numberOfSurroundMines);
@@ -232,20 +257,23 @@ function solveForSolved(id)
 
     if (id % width != 0) 
     {
-        if (arrayOfBoxes[id - 1] && !arrayOfBoxes[id - 1].box.isMine )
+        if (arrayOfBoxes[id - 1] && !arrayOfBoxes[id - 1].box.marked )
         {
+            if (arrayOfBoxes[id - 1].box.isMine) return clickedMine(id - 1);
             solveWithColor(id - 1);
             if (arrayOfBoxes[id - 1].box.numberOfSurroundMines == 0) solveSurrounding(id - 1);
             else arrayOfBoxes[id - 1].textContent = String(arrayOfBoxes[id - 1].box.numberOfSurroundMines);
         }
-        if (arrayOfBoxes[id - width - 1] && !arrayOfBoxes[id - width - 1].box.isMine)
+        if (arrayOfBoxes[id - width - 1] && !arrayOfBoxes[id - width - 1].box.marked)
         {
+            if (arrayOfBoxes[id - width - 1].box.isMine) return clickedMine(id - width - 1);
             solveWithColor(id - width - 1);
             if (arrayOfBoxes[id - width - 1].box.numberOfSurroundMines == 0) solveSurrounding(id - width - 1);
             else arrayOfBoxes[id - width - 1].textContent = String(arrayOfBoxes[id - width - 1].box.numberOfSurroundMines);
         }
-        if (arrayOfBoxes[id + width - 1] && !arrayOfBoxes[id + width - 1].box.isMine)
+        if (arrayOfBoxes[id + width - 1] && !arrayOfBoxes[id + width - 1].box.marked)
         {
+            if (arrayOfBoxes[id + width - 1].box.isMine) return clickedMine(id + width - 1);
             solveWithColor(id + width - 1);
             if (arrayOfBoxes[id + width - 1].box.numberOfSurroundMines == 0) solveSurrounding(id + width - 1);
             else arrayOfBoxes[id + width - 1].textContent = String(arrayOfBoxes[id + width - 1].box.numberOfSurroundMines);
@@ -253,15 +281,17 @@ function solveForSolved(id)
         
     }
     
-    if (arrayOfBoxes[id - width] && !arrayOfBoxes[id - width].box.isMine)
+    if (arrayOfBoxes[id - width] && !arrayOfBoxes[id - width].box.marked)
     {
+        if (arrayOfBoxes[id - width].box.isMine) return clickedMine(id - width);
         solveWithColor(id - width);
         if (arrayOfBoxes[id - width].box.numberOfSurroundMines == 0) solveSurrounding(id - width);
         else arrayOfBoxes[id - width].textContent = String(arrayOfBoxes[id - width].box.numberOfSurroundMines);
     }
         
-    if (arrayOfBoxes[id + width] && !arrayOfBoxes[id + width].box.isMine)
+    if (arrayOfBoxes[id + width] && !arrayOfBoxes[id + width].box.marked)
     {
+        if (arrayOfBoxes[id + width].box.isMine) return clickedMine(id + width);
         solveWithColor(id + width);
         if (arrayOfBoxes[id + width].box.numberOfSurroundMines == 0) solveSurrounding(id + width);
         else arrayOfBoxes[id + width].textContent = String(arrayOfBoxes[id + width].box.numberOfSurroundMines);
@@ -346,7 +376,7 @@ function clickedMine(id)
     {
         arrayOfBoxes[i].removeEventListener("click", whenLeftClicked);
         arrayOfBoxes[i].removeEventListener("contextmenu", whenRightClicked);
-        if (i != id && arrayOfBoxes[i].box.isMine)
+        if (i != id && arrayOfBoxes[i].box.isMine && !arrayOfBoxes[i].box.marked)
         {
             arrayOfBoxes[i].style.backgroundColor = "black";
         }
@@ -392,6 +422,45 @@ function solveWithColor(id)
 }
 
 //script
+
+timer = document.getElementById("timer");
+let minesSoFar = document.getElementById("mines-sofar");
+minesSoFar.textContent = `${markedMineCount}/${mines}`;
+
+let changeButton = document.getElementById("change-button");
+changeButton.addEventListener("mouseover", () => {
+    changeButton.style.backgroundColor = "rgb(70, 70, 70)";
+});
+changeButton.addEventListener("mouseout", () => {
+    changeButton.style.backgroundColor = "rgb(50, 50, 50)";
+});
+changeButton.addEventListener("click", () => {
+    window.open("./index.html", "_self");
+});
+
+let startOverButton = document.getElementById("start-button");
+startOverButton.addEventListener("mouseover", () => {
+    startOverButton.style.backgroundColor = "rgb(70, 70, 70)";
+});
+startOverButton.addEventListener("mouseout", () => {
+    startOverButton.style.backgroundColor = "rgb(50, 50, 50)";
+});
+startOverButton.addEventListener("click", () => {
+    window.open(`./game.html?param1=${height}&param2=${width}&param3=${mines}`, "_self");
+});
+
+let pauseButton = document.getElementById("pause-button");
+pauseButton.addEventListener("mouseover", () => {
+    pauseButton.style.backgroundColor = "rgb(70, 70, 70)";
+});
+pauseButton.addEventListener("mouseout", () => {
+    pauseButton.style.backgroundColor = "rgb(50, 50, 50)";
+});
+pauseButton.addEventListener("click", () => {
+
+});
+
+
 let grid = document.querySelector(".grid");
 for (let x = 0; x < height; ++x)
 {
@@ -424,5 +493,9 @@ write functionality for 0 boxes to solve their surroundings *****done******
 test solveForSolved ***done***
 
 add coloring to the solved boxes ****done****
+
+code the timer
+
+there's a bug when solving for solved. it can cheat for you. fix it.   ****done****
 
 */
