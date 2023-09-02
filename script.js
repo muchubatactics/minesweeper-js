@@ -152,8 +152,7 @@ function whenLeftClicked()
     {
         solveSurrounding(this.box.ID);
     }
-    this.box.solved = true;
-    this.classList.add("solved");
+    solveWithColor(this.box.ID);
 }
 
 
@@ -196,22 +195,19 @@ function solveForSolved(id)
     {
         if (arrayOfBoxes[id + 1] && !arrayOfBoxes[id + 1].box.isMine)
         {
-            arrayOfBoxes[id + 1].box.solved = true;
-            arrayOfBoxes[id + 1].classList.add("solved");
+            solveWithColor(id + 1);
             if (arrayOfBoxes[id + 1].box.numberOfSurroundMines == 0) solveSurrounding(id + 1);
             else arrayOfBoxes[id + 1].textContent = String(arrayOfBoxes[id + 1].box.numberOfSurroundMines);
         }
         if (arrayOfBoxes[id - width + 1] && !arrayOfBoxes[id - width + 1].box.isMine)
         {
-            arrayOfBoxes[id - width + 1].box.solved = true;
-            arrayOfBoxes[id - width + 1].classList.add("solved");
+            solveWithColor(id - width + 1);
             if (arrayOfBoxes[id - width + 1].box.numberOfSurroundMines == 0) solveSurrounding(id - width + 1);
             else arrayOfBoxes[id - width + 1].textContent = String(arrayOfBoxes[id - width + 1].box.numberOfSurroundMines);
         }
         if (arrayOfBoxes[id + width + 1] && !arrayOfBoxes[id + width + 1].box.isMine)
         {
-            arrayOfBoxes[id + width + 1].box.solved = true;
-            arrayOfBoxes[id + width + 1].classList.add("solved");
+            solveWithColor(id + width + 1);
             if (arrayOfBoxes[id + width + 1].box.numberOfSurroundMines == 0) solveSurrounding(id + width + 1);
             else arrayOfBoxes[id + width + 1].textContent = String(arrayOfBoxes[id + width + 1].box.numberOfSurroundMines);
         }
@@ -222,22 +218,19 @@ function solveForSolved(id)
     {
         if (arrayOfBoxes[id - 1] && !arrayOfBoxes[id - 1].box.isMine )
         {
-            arrayOfBoxes[id - 1].box.solved = true;
-            arrayOfBoxes[id - 1].classList.add("solved");
+            solveWithColor(id - 1);
             if (arrayOfBoxes[id - 1].box.numberOfSurroundMines == 0) solveSurrounding(id - 1);
             else arrayOfBoxes[id - 1].textContent = String(arrayOfBoxes[id - 1].box.numberOfSurroundMines);
         }
         if (arrayOfBoxes[id - width - 1] && !arrayOfBoxes[id - width - 1].box.isMine)
         {
-            arrayOfBoxes[id - width - 1].box.solved = true;
-            arrayOfBoxes[id - width - 1].classList.add("solved");
+            solveWithColor(id - width - 1);
             if (arrayOfBoxes[id - width - 1].box.numberOfSurroundMines == 0) solveSurrounding(id - width - 1);
             else arrayOfBoxes[id - width - 1].textContent = String(arrayOfBoxes[id - width - 1].box.numberOfSurroundMines);
         }
         if (arrayOfBoxes[id + width - 1] && !arrayOfBoxes[id + width - 1].box.isMine)
         {
-            arrayOfBoxes[id + width - 1].box.solved = true;
-            arrayOfBoxes[id + width - 1].classList.add("solved");
+            solveWithColor(id + width - 1);
             if (arrayOfBoxes[id + width - 1].box.numberOfSurroundMines == 0) solveSurrounding(id + width - 1);
             else arrayOfBoxes[id + width - 1].textContent = String(arrayOfBoxes[id + width - 1].box.numberOfSurroundMines);
         }
@@ -246,16 +239,14 @@ function solveForSolved(id)
     
     if (arrayOfBoxes[id - width] && !arrayOfBoxes[id - width].box.isMine)
     {
-        arrayOfBoxes[id - width].box.solved = true;
-        arrayOfBoxes[id - width].classList.add("solved");
+        solveWithColor(id - width);
         if (arrayOfBoxes[id - width].box.numberOfSurroundMines == 0) solveSurrounding(id - width);
         else arrayOfBoxes[id - width].textContent = String(arrayOfBoxes[id - width].box.numberOfSurroundMines);
     }
         
     if (arrayOfBoxes[id + width] && !arrayOfBoxes[id + width].box.isMine)
     {
-        arrayOfBoxes[id + width].box.solved = true;
-        arrayOfBoxes[id + width].classList.add("solved");
+        solveWithColor(id + width);
         if (arrayOfBoxes[id + width].box.numberOfSurroundMines == 0) solveSurrounding(id + width);
         else arrayOfBoxes[id + width].textContent = String(arrayOfBoxes[id + width].box.numberOfSurroundMines);
     }
@@ -275,22 +266,19 @@ function solveSurrounding(id)
     {
         if (arrayOfBoxes[id + 1])
         {
-            arrayOfBoxes[id + 1].box.solved = true;
-            arrayOfBoxes[id + 1].classList.add("solved");
+            solveWithColor(id + 1);
             if (arrayOfBoxes[id + 1].box.numberOfSurroundMines == 0) solveSurrounding(id + 1);
             else arrayOfBoxes[id + 1].textContent = String(arrayOfBoxes[id + 1].box.numberOfSurroundMines);
         }
         if (arrayOfBoxes[id - width + 1])
         {
-            arrayOfBoxes[id - width + 1].box.solved = true;
-            arrayOfBoxes[id - width + 1].classList.add("solved");
+            solveWithColor(id - width + 1);
             if (arrayOfBoxes[id - width + 1].box.numberOfSurroundMines == 0) solveSurrounding(id - width + 1);
             else arrayOfBoxes[id - width + 1].textContent = String(arrayOfBoxes[id - width + 1].box.numberOfSurroundMines);
         }
         if (arrayOfBoxes[id + width + 1])
         {
-            arrayOfBoxes[id + width + 1].box.solved = true;
-            arrayOfBoxes[id + width + 1].classList.add("solved");
+            solveWithColor(id + width + 1);
             if (arrayOfBoxes[id + width + 1].box.numberOfSurroundMines == 0) solveSurrounding(id + width + 1);
             else arrayOfBoxes[id + width + 1].textContent = String(arrayOfBoxes[id + width + 1].box.numberOfSurroundMines);
         }
@@ -301,22 +289,19 @@ function solveSurrounding(id)
     {
         if (arrayOfBoxes[id - 1])
         {
-            arrayOfBoxes[id - 1].box.solved = true;
-            arrayOfBoxes[id - 1].classList.add("solved");
+            solveWithColor(id - 1);
             if (arrayOfBoxes[id - 1].box.numberOfSurroundMines == 0) solveSurrounding(id - 1);
             else arrayOfBoxes[id - 1].textContent = String(arrayOfBoxes[id - 1].box.numberOfSurroundMines);
         }
         if (arrayOfBoxes[id - width - 1])
         {
-            arrayOfBoxes[id - width - 1].box.solved = true;
-            arrayOfBoxes[id - width - 1].classList.add("solved");
+            solveWithColor(id - width - 1);
             if (arrayOfBoxes[id - width - 1].box.numberOfSurroundMines == 0) solveSurrounding(id - width - 1);
             else arrayOfBoxes[id - width - 1].textContent = String(arrayOfBoxes[id - width - 1].box.numberOfSurroundMines);
         }
         if (arrayOfBoxes[id + width - 1])
         {
-            arrayOfBoxes[id + width - 1].box.solved = true;
-            arrayOfBoxes[id + width - 1].classList.add("solved");
+            solveWithColor(id + width - 1);
             if (arrayOfBoxes[id + width - 1].box.numberOfSurroundMines == 0) solveSurrounding(id + width - 1);
             else arrayOfBoxes[id + width - 1].textContent = String(arrayOfBoxes[id + width - 1].box.numberOfSurroundMines);
         }
@@ -325,16 +310,14 @@ function solveSurrounding(id)
     
     if (arrayOfBoxes[id - width])
     {
-        arrayOfBoxes[id - width].box.solved = true;
-        arrayOfBoxes[id - width].classList.add("solved");
+        solveWithColor(id - width);
         if (arrayOfBoxes[id - width].box.numberOfSurroundMines == 0) solveSurrounding(id - width);
         else arrayOfBoxes[id - width].textContent = String(arrayOfBoxes[id - width].box.numberOfSurroundMines);
     }
         
     if (arrayOfBoxes[id + width])
     {
-        arrayOfBoxes[id + width].box.solved = true;
-        arrayOfBoxes[id + width].classList.add("solved");
+        solveWithColor(id + width);
         if (arrayOfBoxes[id + width].box.numberOfSurroundMines == 0) solveSurrounding(id + width);
         else arrayOfBoxes[id + width].textContent = String(arrayOfBoxes[id + width].box.numberOfSurroundMines);
     }
@@ -343,6 +326,44 @@ function solveSurrounding(id)
 function clickedMine()
 {
 
+}
+
+function solveWithColor(id)
+{
+    arrayOfBoxes[id].box.solved = true;
+    arrayOfBoxes[id].classList.add("solved");
+
+    switch (arrayOfBoxes[id].box.numberOfSurroundMines)
+    {
+        case 0:
+            arrayOfBoxes[id].style.backgroundColor = "white";
+            break;
+        case 1:
+            arrayOfBoxes[id].style.backgroundColor = "rgb(84, 216, 80)";
+            break;
+        case 2:
+            arrayOfBoxes[id].style.backgroundColor = "rgb(202, 233, 93)";
+            break;
+        case 3:
+            arrayOfBoxes[id].style.backgroundColor = "rgb(233, 155, 82)";
+            break;
+        case 4:
+            arrayOfBoxes[id].style.backgroundColor = "rgb(233, 130, 82)";
+            break;
+        case 5:
+            arrayOfBoxes[id].style.backgroundColor = "rgb(233, 92, 82)";
+            break;
+        case 6:
+            arrayOfBoxes[id].style.backgroundColor = "rgb(240, 72, 72)";
+            break;
+        case 7:
+            arrayOfBoxes[id].style.backgroundColor = "rgb(163, 33, 33)";
+            break;
+        case 8:
+            arrayOfBoxes[id].style.backgroundColor = "rgb(116, 8, 8)";
+            break;
+                
+    }
 }
 
 //script
