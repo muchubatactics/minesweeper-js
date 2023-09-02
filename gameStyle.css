@@ -77,8 +77,12 @@ body {
 
 .solved {
     font-family: "Inter", sans-serif;
-    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     background-color: white;
+    font-size: x-large;
+    font-weight: bold;
 }
 
 .marked {

@@ -388,7 +388,7 @@ either you calculate the number in the boxes when you are initializing or you ca
 
 write functionality for 0 boxes to solve their surroundings *****done******
 
-test solveForSolved
+test solveForSolved ***done***
 
 add coloring to the solved boxes
 
