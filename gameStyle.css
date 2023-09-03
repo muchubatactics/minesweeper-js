@@ -102,11 +102,11 @@ body {
 }
 
 .win-div {
-    color: lime;
+    color: white;
     display: flex;
     justify-content: center;
     align-items: center;
     font-family: "Inter", sans-serif;
-    font-size: 50px;
-    background-color: rgb(0,0,0,0.5);
+    font-size: 30px;
+    background-color: rgb(0,0,0,0.6);
 }

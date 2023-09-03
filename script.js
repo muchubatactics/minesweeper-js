@@ -6,12 +6,12 @@ height = Number(URLParams.get("param1"));
 width = Number(URLParams.get("param2"));
 mines = Number(URLParams.get("param3"));
 
-console.log(height, width, mines);
+// console.log(height, width, mines);
 
 //global
 let isInitialized = false;
 let arrayOfBoxes = [];
-let timer, startTime;
+let timer, startTime = 0, isVisible = true;
 let markedMineCount = 0;
 let boxDimensions;
 
@@ -32,20 +32,34 @@ class Box
 }
 
 //functions
-function initializeTimer()
+function runTimer()
 {
-    startTime = Date.now();
-    document.addEventListener("visibilitychange", () => {
-        if(!document.hidden)
+    setInterval(() => {
+        if (isVisible)
         {
-
+            startTime++;
+            timer.textContent = formatTime(startTime);
         }
-    });
+    }, 1000);
+}
+
+function formatTime(seconds)
+{
+    let str;
+    let x = Math.floor(seconds / 60);
+    let y = seconds - (x * 60);
+    // console.log(x, y);
+
+    if (x < 10) str = `0${x}:`;
+    else str = `${x}:`;
+    if (y < 10) str += `0${y}`;
+    else str += `${y}`;
+    return str;
 }
 
 function initialize(grid, clickedOn)
 {
-    // initializeTimer();
+    runTimer();
 
     markedMineCount = 0;
     minesSoFar.textContent = `${markedMineCount}/${mines}`;
@@ -135,7 +149,7 @@ function generateRandomMines(total, numberOfMines, clickedOn)
         }
     }
 
-    return array.length == numberOfMines ? array : console.log("error in generateRand0mMines()");
+    return array;
 }
 
 function generateSafety(clickedOn)
@@ -310,7 +324,7 @@ function solveForSolved(id)
 
 function solveSurrounding(id)
 {
-    console.log("lets go", id);
+    // console.log("lets go", id);
     if(arrayOfBoxes[id].box.solvedSurround) return;
     arrayOfBoxes[id].box.solvedSurround = true;
 
@@ -379,6 +393,7 @@ function solveSurrounding(id)
 
 function clickedMine(id)
 {
+    isVisible = false;
     arrayOfBoxes[id].style.backgroundColor = "red";
     for (let i = 0; i < arrayOfBoxes.length; i++)
     {
@@ -388,6 +403,7 @@ function clickedMine(id)
         {
             arrayOfBoxes[i].style.backgroundColor = "black";
         }
+        if (arrayOfBoxes[i].box.marked && !arrayOfBoxes[i].box.isMine) arrayOfBoxes[i].style.backgroundColor = "blue";
     }
 }
 
@@ -452,12 +468,14 @@ function pauseResume()
         grid.removeChild(pauseDiv);
         pauseButton.textContent = "Pause";
         isPaused = false;
+        isVisible = true;
     }
     else
     {
         grid.appendChild(pauseDiv);
         pauseButton.textContent = "Resume";
         isPaused = true;
+        isVisible = false;
     }
 }
 
@@ -485,7 +503,9 @@ function checkWin()
 
 function win()
 {
+    isVisible = false;
     pauseButton.removeEventListener("click", pauseResume);
+    winDiv.textContent = "Congratulations, you won in " + formatTime(startTime) ;
     grid.appendChild(winDiv);
 }
 
@@ -536,11 +556,11 @@ winDiv.style.width = String((boxDimensions * width) + (width * 2)) + "px";
 winDiv.style.position = "absolute";
 winDiv.style.zIndex = "1";
 winDiv.classList.add("win-div");
-winDiv.textContent = "Congratulations, you win!";
 
 
 
 timer = document.getElementById("timer");
+
 let minesSoFar = document.getElementById("mines-sofar");
 minesSoFar.textContent = `${markedMineCount}/${mines}`;
 
@@ -575,7 +595,16 @@ pauseButton.addEventListener("mouseout", () => {
 });
 pauseButton.addEventListener("click", pauseResume);
 
-
+document.addEventListener("visibilitychange", () => {
+    if(!document.hidden)
+    {
+        isVisible = true;
+    }
+    else
+    {
+        isVisible = false;
+    }
+});
 
 
 /*
@@ -589,7 +618,7 @@ test solveForSolved ***done***
 
 add coloring to the solved boxes ****done****
 
-code the timer
+code the timer ****done****
 
 there's a bug when solving for solved. it can cheat for you. fix it.   ****done****
 
