@@ -431,6 +431,22 @@ function calculateBoxDimensions()
     //width 17
 }
 
+function pauseResume()
+{
+    if (isPaused)
+    {
+        grid.removeChild(pauseDiv);
+        pauseButton.textContent = "Pause";
+        isPaused = false;
+    }
+    else
+    {
+        grid.appendChild(pauseDiv);
+        pauseButton.textContent = "Resume";
+        isPaused = true;
+    }
+}
+
 //script
 let grid = document.querySelector(".grid");
 
@@ -503,21 +519,7 @@ pauseButton.addEventListener("mouseover", () => {
 pauseButton.addEventListener("mouseout", () => {
     pauseButton.style.backgroundColor = "rgb(50, 50, 50)";
 });
-pauseButton.addEventListener("click", () => {
-    if (isPaused)
-    {
-        grid.removeChild(pauseDiv);
-        pauseButton.textContent = "Pause";
-        isPaused = false;
-    }
-    else
-    {
-        grid.appendChild(pauseDiv);
-        pauseButton = "Resume";
-        isPaused = true;
-    }
-
-});
+pauseButton.addEventListener("click", pauseResume);
 
 
 
