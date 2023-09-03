@@ -175,6 +175,7 @@ function whenLeftClicked()
         solveSurrounding(this.box.ID);
     }
     solveWithColor(this.box.ID);
+    checkWin();
 }
 
 function whenRightClicked(event)
@@ -195,6 +196,7 @@ function whenRightClicked(event)
         markedMineCount++;
         minesSoFar.textContent = `${markedMineCount}/${mines}`;
     }
+    checkWin();
 }
 
 
@@ -301,7 +303,7 @@ function solveForSolved(id)
         else arrayOfBoxes[id + width].textContent = String(arrayOfBoxes[id + width].box.numberOfSurroundMines);
     }
 
-    
+    checkWin();
 
 
 }
@@ -371,6 +373,8 @@ function solveSurrounding(id)
         if (arrayOfBoxes[id + width].box.numberOfSurroundMines == 0) solveSurrounding(id + width);
         else arrayOfBoxes[id + width].textContent = String(arrayOfBoxes[id + width].box.numberOfSurroundMines);
     }
+
+    checkWin();
 }
 
 function clickedMine(id)
@@ -418,17 +422,27 @@ function solveWithColor(id)
         case 7:
             arrayOfBoxes[id].style.backgroundColor = "rgb(163, 33, 33)";
             break;
-            case 8:
-                arrayOfBoxes[id].style.backgroundColor = "rgb(116, 8, 8)";
-                break;
+        case 8:
+            arrayOfBoxes[id].style.backgroundColor = "rgb(116, 8, 8)";
+            break;
                 
-            }
+    }
+
+    checkWin();
 }
 
 function calculateBoxDimensions()
 {
     //height 9
     //width 17
+
+    let maxHeight = Math.floor(0.9 * window.innerHeight);
+    let maxWidth = Math.floor(0.7 * window.innerWidth);
+
+    let x = Math.floor(maxWidth / (width + 2));
+    let y = Math.floor(maxHeight / (height + 2));
+
+    return x < y ? x : y;
 }
 
 function pauseResume()
@@ -447,6 +461,34 @@ function pauseResume()
     }
 }
 
+function checkWin()
+{
+    let marked = 0, markedMines = 0;
+    let solved = 0;
+    for (let i = 0; i < arrayOfBoxes.length; i++)
+    {
+        if (arrayOfBoxes[i].box.solved) solved++;
+        if (arrayOfBoxes[i].marked)
+        {
+            if (arrayOfBoxes[i].isMine) markedMines++;
+            marked++;
+        }
+    }
+    ///marked all and only the mines
+    if (marked == markedMines)
+    {
+        if (marked == mines) return win();
+    }
+    //solved everything but mines
+    if (solved == (arrayOfBoxes.length - mines)) return win();
+}
+
+function win()
+{
+    pauseButton.removeEventListener("click", pauseResume);
+    grid.appendChild(winDiv);
+}
+
 //script
 let grid = document.querySelector(".grid");
 
@@ -458,10 +500,14 @@ for (let x = 0; x < height; ++x)
     {
         let singleBox = document.createElement("div");
         singleBox.classList.add("single-box");
-        singleBox.style.width = "100px";
-        singleBox.style.height = "100px";
-        boxDimensions = 100;
+        let temp = calculateBoxDimensions();
+        singleBox.style.width = String(temp) + "px";
+        singleBox.style.height = String(temp) + "px";
+        boxDimensions = temp;
         singleBox.box = new Box;
+
+        if (temp < 60) singleBox.style.fontSize = "large";
+        if (temp < 40) singleBox.style.fontSize = "medium";
         
         singleBox.addEventListener("click", whenLeftClicked);
         singleBox.addEventListener("contextmenu", whenRightClicked);
@@ -483,6 +529,14 @@ pauseDiv.style.zIndex = "1";
 pauseDiv.style.backgroundColor = "grey";
 pauseDiv.classList.add("paused-div");
 pauseDiv.textContent = "Paused";
+
+let winDiv = document.createElement("div");
+winDiv.style.height = String((boxDimensions * height) + (height * 2)) + "px";
+winDiv.style.width = String((boxDimensions * width) + (width * 2)) + "px";
+winDiv.style.position = "absolute";
+winDiv.style.zIndex = "1";
+winDiv.classList.add("win-div");
+winDiv.textContent = "Congratulations, you win!";
 
 
 
@@ -539,7 +593,7 @@ code the timer
 
 there's a bug when solving for solved. it can cheat for you. fix it.   ****done****
 
-add ability to dynamically calculate box dimensions
+add ability to dynamically calculate box dimensions ****done******
 
 
 */
