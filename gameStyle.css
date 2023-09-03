@@ -87,3 +87,12 @@ body {
 .marked {
     background-color: rgb(83, 0, 0);
 }
+
+.paused-div {
+    color: white;
+    display: flex;
+    justify-content: center;
+    font-family: "Inter", sans-serif;
+    align-items: center;
+    font-size: 30px;
+}

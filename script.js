@@ -13,6 +13,9 @@ let isInitialized = false;
 let arrayOfBoxes = [];
 let timer, startTime;
 let markedMineCount = 0;
+let boxDimensions;
+
+
 
 class Box 
 {
@@ -158,6 +161,7 @@ function generateSafety(clickedOn)
 
 function whenLeftClicked()
 {
+    if (this.box.marked) return;
     if (!isInitialized) initialize(arrayOfBoxes, this.box.ID);
     if (this.box.solved) return solveForSolved(this.box.ID);
     if (this.box.isMine) return clickedMine(this.box.ID);
@@ -414,14 +418,57 @@ function solveWithColor(id)
         case 7:
             arrayOfBoxes[id].style.backgroundColor = "rgb(163, 33, 33)";
             break;
-        case 8:
-            arrayOfBoxes[id].style.backgroundColor = "rgb(116, 8, 8)";
-            break;
+            case 8:
+                arrayOfBoxes[id].style.backgroundColor = "rgb(116, 8, 8)";
+                break;
                 
-    }
+            }
+}
+
+function calculateBoxDimensions()
+{
+    //height 9
+    //width 17
 }
 
 //script
+let grid = document.querySelector(".grid");
+
+
+for (let x = 0; x < height; ++x)
+{
+    let boxRow = document.createElement("div");
+    for(let y = 0; y < width; ++y)
+    {
+        let singleBox = document.createElement("div");
+        singleBox.classList.add("single-box");
+        singleBox.style.width = "100px";
+        singleBox.style.height = "100px";
+        boxDimensions = 100;
+        singleBox.box = new Box;
+        
+        singleBox.addEventListener("click", whenLeftClicked);
+        singleBox.addEventListener("contextmenu", whenRightClicked);
+
+        boxRow.appendChild(singleBox);
+        arrayOfBoxes.push(singleBox);
+    }
+    grid.appendChild(boxRow);
+}
+
+
+//pause content
+let isPaused = false;
+let pauseDiv = document.createElement("div");
+pauseDiv.style.height = String((boxDimensions * height) + (height * 2)) + "px";
+pauseDiv.style.width = String((boxDimensions * width) + (width * 2)) + "px";
+pauseDiv.style.position = "absolute";
+pauseDiv.style.zIndex = "1";
+pauseDiv.style.backgroundColor = "grey";
+pauseDiv.classList.add("paused-div");
+pauseDiv.textContent = "Paused";
+
+
 
 timer = document.getElementById("timer");
 let minesSoFar = document.getElementById("mines-sofar");
@@ -457,30 +504,22 @@ pauseButton.addEventListener("mouseout", () => {
     pauseButton.style.backgroundColor = "rgb(50, 50, 50)";
 });
 pauseButton.addEventListener("click", () => {
+    if (isPaused)
+    {
+        grid.removeChild(pauseDiv);
+        pauseButton.textContent = "Pause";
+        isPaused = false;
+    }
+    else
+    {
+        grid.appendChild(pauseDiv);
+        pauseButton = "Resume";
+        isPaused = true;
+    }
 
 });
 
 
-let grid = document.querySelector(".grid");
-for (let x = 0; x < height; ++x)
-{
-    let boxRow = document.createElement("div");
-    for(let y = 0; y < width; ++y)
-    {
-        let singleBox = document.createElement("div");
-        singleBox.classList.add("single-box");
-        singleBox.style.width = "100px";
-        singleBox.style.height = "100px";
-        singleBox.box = new Box;
-        
-        singleBox.addEventListener("click", whenLeftClicked);
-        singleBox.addEventListener("contextmenu", whenRightClicked);
-
-        boxRow.appendChild(singleBox);
-        arrayOfBoxes.push(singleBox);
-    }
-    grid.appendChild(boxRow);
-}
 
 
 /*
@@ -497,5 +536,8 @@ add coloring to the solved boxes ****done****
 code the timer
 
 there's a bug when solving for solved. it can cheat for you. fix it.   ****done****
+
+add ability to dynamically calculate box dimensions
+
 
 */
