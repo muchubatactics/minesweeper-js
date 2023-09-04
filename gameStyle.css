@@ -11,9 +11,6 @@ body {
 
 
 .grid {
-    /* background-color: gray; */
-    /* width: 70vw;
-    height: 90vh; */
     display: flex;
     flex-direction: column;
     cursor: default;
@@ -31,7 +28,7 @@ body {
     border-radius: 3px;
     border: 0px;
     margin: 1px;
-    background-color: gray;
+    background-color: rgb(186, 189, 182);
 }
 
 .controls {
@@ -89,7 +86,25 @@ body {
 }
 
 .marked {
-    background-color: rgb(83, 0, 0);
+    background-image: url(./SVG/Asset\ 9.svg);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 50%;
+}
+
+.clicked-mine-this {
+    background-image: url(./SVG/Asset\ 4.svg);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 50%;
+}
+
+.clicked-mine {
+    background-image: url(./SVG/Asset\ 2.svg);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 50%;
+    background-color: rgb(136, 138, 133);
 }
 
 .paused-div {

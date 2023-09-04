@@ -1,12 +1,17 @@
+/*
+
+muchubatactics 4/09/23
+~I also am other than what I imagine myself to be, to know this is forgiveness.
+
+
+*/
+
 let height, width, mines;
 let URLParams = new URLSearchParams(window.location.search);
 
-//work on impossible percentages
 height = Number(URLParams.get("param1"));
 width = Number(URLParams.get("param2"));
 mines = Number(URLParams.get("param3"));
-
-// console.log(height, width, mines);
 
 //global
 let isInitialized = false;
@@ -14,8 +19,6 @@ let arrayOfBoxes = [];
 let timer, startTime = 0, isVisible = true;
 let markedMineCount = 0;
 let boxDimensions;
-
-
 
 class Box 
 {
@@ -394,16 +397,19 @@ function solveSurrounding(id)
 function clickedMine(id)
 {
     isVisible = false;
-    arrayOfBoxes[id].style.backgroundColor = "red";
+    arrayOfBoxes[id].classList.add("clicked-mine-this");
     for (let i = 0; i < arrayOfBoxes.length; i++)
     {
         arrayOfBoxes[i].removeEventListener("click", whenLeftClicked);
         arrayOfBoxes[i].removeEventListener("contextmenu", whenRightClicked);
         if (i != id && arrayOfBoxes[i].box.isMine && !arrayOfBoxes[i].box.marked)
         {
-            arrayOfBoxes[i].style.backgroundColor = "black";
+            arrayOfBoxes[i].classList.add("clicked-mine");
         }
-        if (arrayOfBoxes[i].box.marked && !arrayOfBoxes[i].box.isMine) arrayOfBoxes[i].style.backgroundColor = "blue";
+        if (arrayOfBoxes[i].box.marked && !arrayOfBoxes[i].box.isMine)
+        {
+            arrayOfBoxes[i].style.backgroundColor = "red";
+        } 
     }
 }
 
@@ -415,25 +421,25 @@ function solveWithColor(id)
     switch (arrayOfBoxes[id].box.numberOfSurroundMines)
     {
         case 0:
-            arrayOfBoxes[id].style.backgroundColor = "white";
+            arrayOfBoxes[id].style.backgroundColor = "rgb(222, 222, 220)";
             break;
         case 1:
-            arrayOfBoxes[id].style.backgroundColor = "rgb(84, 216, 80)";
+            arrayOfBoxes[id].style.backgroundColor = "rgb(221, 250, 195)";
             break;
         case 2:
-            arrayOfBoxes[id].style.backgroundColor = "rgb(202, 233, 93)";
+            arrayOfBoxes[id].style.backgroundColor = "rgb(236, 237, 191)";
             break;
         case 3:
-            arrayOfBoxes[id].style.backgroundColor = "rgb(233, 155, 82)";
+            arrayOfBoxes[id].style.backgroundColor = "rgb(237, 218, 180)";
             break;
         case 4:
-            arrayOfBoxes[id].style.backgroundColor = "rgb(233, 130, 82)";
+            arrayOfBoxes[id].style.backgroundColor = "rgb(237, 195, 138)";
             break;
         case 5:
-            arrayOfBoxes[id].style.backgroundColor = "rgb(233, 92, 82)";
+            arrayOfBoxes[id].style.backgroundColor = "rgb(254, 167, 133)";
             break;
         case 6:
-            arrayOfBoxes[id].style.backgroundColor = "rgb(240, 72, 72)";
+            arrayOfBoxes[id].style.backgroundColor = "rgb(247, 161, 162)";
             break;
         case 7:
             arrayOfBoxes[id].style.backgroundColor = "rgb(163, 33, 33)";
@@ -550,6 +556,7 @@ pauseDiv.style.backgroundColor = "grey";
 pauseDiv.classList.add("paused-div");
 pauseDiv.textContent = "Paused";
 
+//win content
 let winDiv = document.createElement("div");
 winDiv.style.height = String((boxDimensions * height) + (height * 2)) + "px";
 winDiv.style.width = String((boxDimensions * width) + (width * 2)) + "px";
@@ -558,12 +565,14 @@ winDiv.style.zIndex = "1";
 winDiv.classList.add("win-div");
 
 
-
+//timer
 timer = document.getElementById("timer");
 
+//field to keep track of mines
 let minesSoFar = document.getElementById("mines-sofar");
 minesSoFar.textContent = `${markedMineCount}/${mines}`;
 
+//buttons and event listeners
 let changeButton = document.getElementById("change-button");
 changeButton.addEventListener("mouseover", () => {
     changeButton.style.backgroundColor = "rgb(70, 70, 70)";
@@ -596,33 +605,19 @@ pauseButton.addEventListener("mouseout", () => {
 pauseButton.addEventListener("click", pauseResume);
 
 document.addEventListener("visibilitychange", () => {
-    if(!document.hidden)
+    if(document.hidden)
     {
-        isVisible = true;
+        isVisible = false;
+        pauseResume();
     }
     else
     {
-        isVisible = false;
+        isVisible = true;
+        pauseResume();
     }
 });
 
-
 /*
 NOTES
-
-either you calculate the number in the boxes when you are initializing or you calculate it per click. (i think ill go with the in initialise option) ******done********
-
-write functionality for 0 boxes to solve their surroundings *****done******
-
-test solveForSolved ***done***
-
-add coloring to the solved boxes ****done****
-
-code the timer ****done****
-
-there's a bug when solving for solved. it can cheat for you. fix it.   ****done****
-
-add ability to dynamically calculate box dimensions ****done******
-
-
+add pop up windows
 */
